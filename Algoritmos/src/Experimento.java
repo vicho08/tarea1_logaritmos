@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.rmi.AlreadyBoundException;
 
 public class Experimento {
 	    int N;
@@ -9,7 +10,7 @@ public class Experimento {
 	    }
 
 
-	    public void Consumidor() throws IOException{
+	    public void Consumidor() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, AlreadyBoundException{
 	        this.db = new Database("ConsumidorInsert10.txt");
 	        double timeI = 0;
 	        double timeF = 0;
@@ -38,13 +39,16 @@ public class Experimento {
 	        timeF= System.currentTimeMillis();
 	        totalTime= timeF-timeI;
 	        System.out.println("Tiempo: "+ totalTime+ "[ms]");
-	        //ordenar por id
-	        //ordenar por rut
-	        //ordenar por puntos
 	        
+	        //ordenar por id
+	        //db.ordenar("id");
+	        //ordenar por rut
+	        //db.ordenar(" rut ");
+	        //ordenar por puntos
+	        db.ordenar(" puntos ");
 
 	    }
-		public static void main(String[] args) throws IOException {
+		public static void main(String[] args) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, AlreadyBoundException {
 			Experimento ex= new Experimento(10);
 			ex.Consumidor();
 		}
