@@ -1,25 +1,25 @@
+import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Set;
-
-
 
 public class Database {
 	String nombreArchivo;
-	Set<String> keys;
-	public Database(String nombre) {
+	List<String> keys;
+	public Database(String nombre, String[] db_keys) {
 		nombreArchivo= nombre;
-		/*keys = new HashSet<String>(); //fix this
-		keys.add("id");
-		keys.add(" rut ");
-		keys.add("-");
-		keys.add(" puntos ");*/
+		keys = new LinkedList<String>();
+		for (String key:db_keys) {
+			keys.add(key);
+		}
 	}
 	
 	public void comparar(Nodo nodo, String llave) {
 		Set<String> keysNodo= nodo.getKeys();
-		Set<String> keysThisNodo= this.keys;
+		List<String> keysThisNodo= this.keys;
 		for(String key1: keysThisNodo){
 			if (key1.equals(llave)){
 				for (String key2: keysNodo) {
@@ -31,21 +31,20 @@ public class Database {
 		}
 	}
 	
-	public static int getIndex(Set<String> set, Object value) {
+	public int getIndex(List<String> set, Object value) {
 		   int result = 0;
-		   for (String entry:set) {
-		     if (entry.equals(value)) break;
-		     result++;
+		   Iterator<String> iter = set.iterator();
+		   while (iter.hasNext()) {
+			   if (iter.next().equals(value)) break;
+			   result++;
 		   }
 		   return result;
 	}
 	
 	//TODO
 	public void ordenar(String attr) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, AlreadyBoundException {
-		for (String attri:this.keys) {
-			System.out.println(attri);
-		}
-		int ind = Database.getIndex(this.keys, attr);
+		int ind = getIndex(this.keys, attr);
+		System.out.println(ind);
 		String attr_ind = Integer.toString(ind);
 		String[] args = {attr_ind, nombreArchivo}; 
 		ExternalMergeSort.main(args);
@@ -53,7 +52,6 @@ public class Database {
 	
 	public void agregar(Nodo nodo) throws IOException {
 		FileWriter fw = new FileWriter(nombreArchivo, true);
-		keys= nodo.getKeys();
 		
 		//Por cada llave, añadimos su valor al archivo:ej: 1;19136938-6;1000 \n
 		//(en formato csv)
@@ -69,7 +67,7 @@ public class Database {
 				fw.append(value);
 			}
 			++n;
-		 }
+		}
 		fw.append('\n');
 		fw.close();
 		 

@@ -19,6 +19,7 @@ public class QuickSort {
     private String getVal(String line, int ind) {
     	String[] line_aux = line.split(";");
     	return line_aux[ind];
+    	
     }
  
     private void quickSort(int lowerIndex, int higherIndex, int attr_ind) {
@@ -36,12 +37,19 @@ public class QuickSort {
              * from right side which is less then the pivot value. Once the search 
              * is done, then we exchange both numbers.
              */
+        	while (Integer.parseInt(getVal(array.get(i), attr_ind)) < Integer.parseInt(pivot)) {
+                i++;
+            }
+            while (Integer.parseInt(getVal(array.get(j), attr_ind)) > Integer.parseInt(pivot)) {
+                j--;
+            }
+            /*
             while (getVal(array.get(i), attr_ind).compareTo(pivot) < 0) {
                 i++;
             }
             while (getVal(array.get(j), attr_ind).compareTo(pivot) > 0) {
                 j--;
-            }
+            }*/
             if (i <= j) {
                 exchangeNumbers(i, j);
                 //move index to next position on both sides
@@ -65,4 +73,6 @@ public class QuickSort {
     }
      
 }	
+		
+
 		
